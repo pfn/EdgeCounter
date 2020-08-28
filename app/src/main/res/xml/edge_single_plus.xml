@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cocktail-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    label="@string/edge_name"
+    description="@string/edge_description"
+    cocktailWidth="550">
+</cocktail-provider>
