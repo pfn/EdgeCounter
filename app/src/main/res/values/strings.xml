@@ -6,4 +6,5 @@
     <string name="down">Down</string>
     <string name="up">Up</string>
     <string name="reset">Reset</string>
+    <string name="ts_fmt">@\nhh:mm a\nMMM dd</string>
 </resources>
