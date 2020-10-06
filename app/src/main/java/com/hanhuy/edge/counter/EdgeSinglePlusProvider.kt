@@ -5,6 +5,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.AudioAttributes
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.RemoteViews
 import com.samsung.android.sdk.look.cocktailbar.SlookCocktailManager
@@ -13,16 +16,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
 
+
 class EdgeSinglePlusProvider : SlookCocktailProvider() {
     override fun onReceive(context: Context, intent: Intent?) {
         when (intent?.action) {
             ACTION_INC -> {
+                vibrate(context)
                 updateViews(context, increment(context))
             }
             ACTION_DEC -> {
+                vibrate(context)
                 updateViews(context, decrement(context))
             }
             ACTION_RST -> {
+                vibrate(context)
                 updateViews(context, setCount(context, 0))
             }
             else -> super.onReceive(context, intent)
@@ -46,14 +53,23 @@ class EdgeSinglePlusProvider : SlookCocktailProvider() {
             updateView(context, cocktailManager, it, count)
         }
     }
-    private fun updateView(context: Context, cocktailManager: SlookCocktailManager, id: Int, count: Int) {
+    private fun updateView(
+        context: Context,
+        cocktailManager: SlookCocktailManager,
+        id: Int,
+        count: Int
+    ) {
         val views = RemoteViews(context.packageName, R.layout.panel)
+
         views.setTextViewText(R.id.count, count.toString())
-        views.setViewVisibility(R.id.reset, if (count == 0) View.INVISIBLE else View.VISIBLE)
-        views.setViewVisibility(R.id.last_time, if (count == 0) View.INVISIBLE else View.VISIBLE)
+
+        val zeroVisibility = if (count == 0) View.INVISIBLE else View.VISIBLE
+        views.setViewVisibility(R.id.reset, zeroVisibility)
+        views.setViewVisibility(R.id.last_time, zeroVisibility)
+        views.setViewVisibility(R.id.last_container, zeroVisibility)
+
         val fmt = SimpleDateFormat(context.getString(R.string.ts_fmt), Locale.US)
-        val ts = fmt.format(Date(last(context)))
-        views.setTextViewText(R.id.last_time, ts)
+        views.setTextViewText(R.id.last_time, fmt.format(Date(last(context))))
 
         views.setOnClickPendingIntent(
             R.id.add,
@@ -116,5 +132,17 @@ class EdgeSinglePlusProvider : SlookCocktailProvider() {
 
         fun last(context: Context): Long =
             prefs(context).getLong(PREF_TIMESTAMP, 0L)
+
+        fun vibrate(context: Context) {
+            val vibe = context.getSystemService(Vibrator::class.java)
+            val aa = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+
+            vibe?.vibrate(
+                VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK), aa
+            )
+        }
     }
 }

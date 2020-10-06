@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="72sp"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/primary_text_dark"
         android:layout_margin="24dp"
         tools:text="5"
         />
@@ -33,14 +33,27 @@
         android:contentDescription="@string/reset"
         android:layout_gravity="center"
         />
-    <TextView
-        android:id="@+id/last_time"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@\n12:43 PM\nJun 5"/>
+    <FrameLayout
+        android:id="@+id/last_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:tint="#444444"
+            android:src="@drawable/ic_access_time_777_48"/>
+        <TextView
+            android:id="@+id/last_time"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@android:color/secondary_text_dark"
+            tools:text="12:43 PM\nJun 5"/>
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/spacer2"
