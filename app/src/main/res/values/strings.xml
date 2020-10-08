@@ -6,5 +6,5 @@
     <string name="down">Down</string>
     <string name="up">Up</string>
     <string name="reset">Reset</string>
-    <string name="ts_fmt">h:mm a\nEEE MMM dd</string>
+    <string name="ts_fmt">h:mm a\nEEE MMM d</string>
 </resources>
